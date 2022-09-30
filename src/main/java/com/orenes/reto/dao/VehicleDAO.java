@@ -13,7 +13,7 @@ public class VehicleDAO {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "plate_number")
+	@Column(name = "plate_number", updatable = false, unique = true)
 	private String plateNumber;
 
 	protected VehicleDAO() { }
@@ -28,10 +28,6 @@ public class VehicleDAO {
 	
 	public String getPlateNumber() {
 		return plateNumber;
-	}
-
-	public void setPlateNumber(final String plateNumber) {
-		this.plateNumber = plateNumber;
 	}
 
 	@Override
