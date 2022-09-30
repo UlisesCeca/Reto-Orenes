@@ -1,5 +1,13 @@
 package com.orenes.reto.services.entities;
 
+/**
+ * Class that represents the Vehicle entity. This entity stores all the information
+ * needed to locate a vehicle. 
+ * 
+ * @author Ulises Ceca
+ * @version 1.0
+ */
+
 public class Vehicle {
 	private Long id;
 	private String plateNumber;

@@ -1,5 +1,13 @@
 package com.orenes.reto.services.entities;
 
+/**
+ * Class that represents the Location of a vehicle. This class represents all the information needed to know 
+ * where a vehicle is located at a given moment. 
+ * 
+ * @author Ulises Ceca
+ * @version 1.0
+ */
+
 import java.time.LocalDateTime;
 
 public class Location {
