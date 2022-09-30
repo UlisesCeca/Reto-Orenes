@@ -1,5 +1,7 @@
 package com.orenes.reto.services.impl;
 
+import java.time.LocalDateTime;
+
 /**
  * Class that implements the bussiness logic regarding the location of the vehicles
  * 
@@ -38,6 +40,7 @@ public class LocationServiceImpl implements LocationService {
 		final LocationDAO newLocationDao = this.modelMapper.map(newLocation, LocationDAO.class);
 		final Location insertedLocation;
 
+		newLocationDao.setDateTime(LocalDateTime.now());
 		vehicleDao.setLastLocation(newLocationDao);
 		
 		this.vehicleRepository.save(vehicleDao);

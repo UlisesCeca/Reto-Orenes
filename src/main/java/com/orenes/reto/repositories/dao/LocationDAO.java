@@ -41,17 +41,33 @@ public class LocationDAO {
 	public VehicleDAO getVehicle() {
 		return this.vehicle;
 	}
+
+	public void setVehicle(final VehicleDAO vehicle) {
+		this.vehicle = vehicle;
+	}
 	
 	public Long getLatitude() {
 		return this.latitude;
+	}
+
+	public void setLatitude(final Long latitude) {
+		this.latitude = latitude;
 	}
 	
 	public Long getLongitude() {
 		return this.longitude;
 	}
+
+	public void setLongitude(final Long longitude) {
+		this.longitude = longitude;
+	}
 	
 	public LocalDateTime getDateTime() {
 		return this.dateTime;
+	}
+
+	public void setDateTime(final LocalDateTime dateTime) {
+		this.dateTime = dateTime;
 	}
 
 	@Override
