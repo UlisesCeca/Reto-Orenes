@@ -1,5 +1,12 @@
 package com.orenes.reto.services.impl;
 
+/**
+ * Class that implements the bussiness logic regarding the location of the vehicles
+ * 
+ * @author Ulises Ceca
+ * @version 1.0
+ */
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
