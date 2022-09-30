@@ -1,4 +1,4 @@
-package com.orenes.reto.dao;
+package com.orenes.reto.repositories.dao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
