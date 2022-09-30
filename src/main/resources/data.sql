@@ -1,4 +1,9 @@
-INSERT INTO orders (id, address) VALUES (1, 'Calle Almendros, 1');
-INSERT INTO orders (id, address) VALUES (2, 'Calle Almendros, 2');
-INSERT INTO orders (id, address) VALUES (3, 'Calle Almendros, 3');
-INSERT INTO orders (id, address) VALUES (4, 'Calle Almendros, 4');
+INSERT INTO vehicles (id, plate_number) VALUES (1, '111111A');
+INSERT INTO vehicles (id, plate_number) VALUES (2, '111111B');
+INSERT INTO vehicles (id, plate_number) VALUES (3, '111111C');
+INSERT INTO vehicles (id, plate_number) VALUES (4, '111111D');
+
+INSERT INTO orders (id, assigned_vehicle) VALUES (1, 1);
+INSERT INTO orders (id, assigned_vehicle) VALUES (2, 2);
+INSERT INTO orders (id, assigned_vehicle) VALUES (3, 3);
+INSERT INTO orders (id, assigned_vehicle) VALUES (4, 4);

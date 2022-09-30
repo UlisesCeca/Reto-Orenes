@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,29 +14,26 @@ public class OrderDAO {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	private String address;
+	@OneToOne
+    @JoinColumn(name = "assigned_vehicle", referencedColumnName = "id")
+    private VehicleDAO assignedVehicle;
 	
 	protected OrderDAO() {}
-	
-	public OrderDAO(final String address) {
-		this.address = address;
-	}
 	
 	public Long getId() {
 		return id;
 	}
-
-	public String getAddress() {
-		return address;
+	
+	public VehicleDAO getAssignedVehicle() {
+		return assignedVehicle;
 	}
 
-	public void setAddress(final String address) {
-		this.address = address;
+	public void setAssignedVehicle(final VehicleDAO assignedVehicle) {
+		this.assignedVehicle = assignedVehicle;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "OrderEntity [id=" + id + ", address=" + address + "]";
-	}		
-	
+		return "OrderDAO [id=" + id + ", assignedVehicle=" + assignedVehicle + "]";
+	}
 }
