@@ -2,6 +2,7 @@ package com.orenes.reto.repositories.dao;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,8 +20,11 @@ public class LocationDAO {
 	@OneToOne
     @JoinColumn(name = "vehicle", referencedColumnName = "id", updatable = false)
     private VehicleDAO vehicle;
+	@Column(name = "latitude")
 	private Long latitude;
+	@Column(name = "longitude")
 	private Long longitude;
+	@Column(name = "date_time")
 	private LocalDateTime dateTime;
 	
 	public Long getId() {
