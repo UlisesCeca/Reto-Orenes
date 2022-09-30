@@ -1,4 +1,11 @@
 package com.orenes.reto.repositories.dao;
+/**
+ * Class that represents the Location entity. This entity represents all the information needed to know 
+ * where a vehicle is located at a given moment. 
+ * 
+ * @author Ulises Ceca
+ * @version 1.0
+ */
 
 import java.time.LocalDateTime;
 
@@ -32,24 +39,24 @@ public class LocationDAO {
 	}
 	
 	public VehicleDAO getVehicle() {
-		return vehicle;
+		return this.vehicle;
 	}
 	
 	public Long getLatitude() {
-		return latitude;
+		return this.latitude;
 	}
 	
 	public Long getLongitude() {
-		return longitude;
+		return this.longitude;
 	}
 	
 	public LocalDateTime getDateTime() {
-		return dateTime;
+		return this.dateTime;
 	}
 
 	@Override
 	public String toString() {
-		return "LocationDAO [id=" + id + ", vehicle=" + vehicle + ", latitude=" + latitude + ", longitude=" + longitude
-				+ ", dateTime=" + dateTime + "]";
+		return "LocationDAO [id=" + this.id + ", vehicle=" + this.vehicle + ", latitude=" + this.latitude + ", longitude=" + this.longitude
+				+ ", dateTime=" + this.dateTime + "]";
 	}
 }

@@ -1,5 +1,11 @@
 package com.orenes.reto.repositories.dao;
-
+/**
+ * Class that represents the Order entity. This entity stores all the information
+ * of an order made by a client. 
+ * 
+ * @author Ulises Ceca
+ * @version 1.0
+ */
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,15 +25,15 @@ public class OrderDAO {
     private VehicleDAO assignedVehicle;
 	
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 	
 	public VehicleDAO getAssignedVehicle() {
-		return assignedVehicle;
+		return this.assignedVehicle;
 	}
 
 	@Override
 	public String toString() {
-		return "OrderDAO [id=" + id + ", assignedVehicle=" + assignedVehicle + "]";
+		return "OrderDAO [id=" + this.id + ", assignedVehicle=" + this.assignedVehicle + "]";
 	}
 }
