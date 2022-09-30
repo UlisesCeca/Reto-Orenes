@@ -1,7 +1,7 @@
 package com.orenes.reto.services.entities;
 
 /**
- * Class that represents the Vehicle entity. This entity stores all the information
+ * Class that represents a Vehicle. This class stores all the information
  * needed to locate a vehicle. 
  * 
  * @author Ulises Ceca
