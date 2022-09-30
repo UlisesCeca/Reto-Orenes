@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,23 +17,25 @@ public class VehicleDAO {
 	private Long id;
 	@Column(name = "plate_number", updatable = false, unique = true)
 	private String plateNumber;
-
-	protected VehicleDAO() { }
+	@OneToOne(mappedBy = "vehicle")
+    @JoinColumn(name = "current_location", referencedColumnName = "id")
+	private LocationDAO currentLocation;
 	
 	public Long getId() {
 		return id;
-	}
-
-	public VehicleDAO(final String plateNumber) {
-		this.plateNumber = plateNumber;
 	}
 	
 	public String getPlateNumber() {
 		return plateNumber;
 	}
-
+	
+	public LocationDAO getCurrentLocation() {
+		return currentLocation;
+	}
+	
 	@Override
 	public String toString() {
-		return "VehicleDAO [id=" + id + ", plateNumber=" + plateNumber + "]";
+		return "VehicleDAO [id=" + id + ", plateNumber=" + plateNumber + ", currentLocation=" + currentLocation + "]";
 	}
+	
 }

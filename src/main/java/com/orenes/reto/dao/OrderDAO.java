@@ -18,8 +18,6 @@ public class OrderDAO {
     @JoinColumn(name = "assigned_vehicle", referencedColumnName = "id")
     private VehicleDAO assignedVehicle;
 	
-	protected OrderDAO() {}
-	
 	public Long getId() {
 		return id;
 	}
@@ -28,10 +26,6 @@ public class OrderDAO {
 		return assignedVehicle;
 	}
 
-	public void setAssignedVehicle(final VehicleDAO assignedVehicle) {
-		this.assignedVehicle = assignedVehicle;
-	}
-	
 	@Override
 	public String toString() {
 		return "OrderDAO [id=" + id + ", assignedVehicle=" + assignedVehicle + "]";
