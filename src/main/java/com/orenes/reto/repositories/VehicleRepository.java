@@ -1,4 +1,6 @@
 package com.orenes.reto.repositories;
+import java.util.Optional;
+
 /**
  * Interface to interact with the Vehicle entity and its persistence
  * 
@@ -9,4 +11,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.orenes.reto.repositories.dao.VehicleDAO;
 
-public interface VehicleRepository extends CrudRepository<VehicleDAO, Long> { }
+public interface VehicleRepository extends CrudRepository<VehicleDAO, Long> { 
+	Optional<VehicleDAO> findByPlateNumber(final String plateNumber);
+}

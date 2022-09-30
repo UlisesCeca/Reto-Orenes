@@ -1,5 +1,10 @@
 package com.orenes.reto.services;
 
-public interface LocationService {
+import org.springframework.stereotype.Service;
 
+import com.orenes.reto.services.entities.Location;
+
+@Service
+public interface LocationService {
+	Location updateVehicleLocation(final Location newLocation, final String vehiclePlateNumber);
 }
