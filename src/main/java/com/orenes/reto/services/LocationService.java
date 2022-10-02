@@ -25,9 +25,9 @@ public interface LocationService {
 	Location updateVehicleLocation(final Location newLocation, final String vehiclePlateNumber);
 	
 	/**
-	 * Retrieves the current location from a vehicle with the specified plate number
+	 * Retrieves the current location from a vehicle with the specified plate number.
 	 * @param vehiclePlateNumber the vehicle plate number
-	 * @returnt he current location from the specified vehicle
+	 * @return the current location from the specified vehicle
 	 */
 	Location getVehicleLocation(final String vehiclePlateNumber);
 }

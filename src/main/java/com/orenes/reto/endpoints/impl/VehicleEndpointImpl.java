@@ -3,6 +3,7 @@ package com.orenes.reto.endpoints.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,13 +39,25 @@ public class VehicleEndpointImpl implements VehicleEndpoint{
 	 * @param locationDto the current location of the vehicle
 	 * @return the updated location of the vehicle with the current system's date-time
 	 */
-	@PutMapping("/vehicles/{plateNumber}/locations")
+	@PutMapping("/vehicles/{plateNumber}/location")
 	@Override
 	public ResponseEntity<LocationDTO> updateVehicleLocation(@PathVariable final String plateNumber,
 			@RequestBody final LocationDTO locationDto) {
 		final Location newLocation = this.locationService.updateVehicleLocation(this.modelMapper.map(locationDto, Location.class), plateNumber);
-		final LocationDTO savedLocation = this.modelMapper.map(newLocation, LocationDTO.class);
+
+		return ResponseEntity.ok(this.modelMapper.map(newLocation, LocationDTO.class));
+	}
+
+	/**
+	 * Retrieves the current location from a vehicle with the specified plate number.
+	 * @param vehiclePlateNumber the vehicle plate number
+	 * @return the current location from the specified vehicle
+	 */
+	@GetMapping("/vehicles/{plateNumber}/location")
+	@Override
+	public ResponseEntity<LocationDTO> getVehicleLocation(@PathVariable final String plateNumber) {
+		final Location newLocation = this.locationService.getVehicleLocation(plateNumber);
 		
-		return ResponseEntity.ok(savedLocation);
+		return ResponseEntity.ok(this.modelMapper.map(newLocation, LocationDTO.class));
 	}
 }

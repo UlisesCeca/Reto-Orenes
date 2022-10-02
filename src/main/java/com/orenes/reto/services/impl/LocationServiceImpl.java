@@ -63,9 +63,9 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	/**
-	 * Retrieves the current location from a vehicle with the specified plate number
+	 * Retrieves the current location from a vehicle with the specified plate number.
 	 * @param vehiclePlateNumber the vehicle plate number
-	 * @returnt he current location from the specified vehicle
+	 * @return the current location from the specified vehicle
 	 */
 	@Override
 	public Location getVehicleLocation(final String vehiclePlateNumber) {

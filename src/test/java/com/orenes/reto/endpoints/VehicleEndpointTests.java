@@ -37,7 +37,7 @@ public class VehicleEndpointTests {
 
 	private final Long LATITUDE = 1234L;
 	private final Long LONGITUDE = 4321L;
-	private final String LOCATIONS_URL = "/vehicles/{plate}/locations";
+	private final String LOCATIONS_URL = "/vehicles/{plate}/location";
 	
 	@BeforeEach
     public void setup() {
