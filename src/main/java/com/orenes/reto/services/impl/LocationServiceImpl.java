@@ -73,7 +73,6 @@ public class LocationServiceImpl implements LocationService {
 		final VehicleDAO vehicleDao = this.vehicleRepository.findByPlateNumber(vehiclePlateNumber)
 				.orElseThrow(() -> new VehicleNotFoundException(vehiclePlateNumber));
 		final LocationDAO locationDao = Objects.isNull(vehicleDao.getLastLocation()) ? new LocationDAO() : this.modelMapper.map(vehicleDao.getLastLocation(), LocationDAO.class);
-
 		return this.modelMapper.map(locationDao, Location.class);
 	}
 

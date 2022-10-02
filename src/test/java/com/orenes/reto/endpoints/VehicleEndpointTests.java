@@ -3,6 +3,7 @@ package com.orenes.reto.endpoints;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.orenes.reto.endpoints.advices.OrderIDAlreadyExistsAdvice;
 import com.orenes.reto.endpoints.advices.VehicleNotFoundAdvice;
 import com.orenes.reto.endpoints.dto.LocationDTO;
+import com.orenes.reto.endpoints.dto.OrderDTO;
 
 /**
  * Test class for the VehicleEndpointTests class
@@ -39,11 +42,12 @@ public class VehicleEndpointTests {
 	private final Long LATITUDE = 1234566L;
 	private final Long LONGITUDE = 1234567L;
 	private final String LOCATIONS_URL = "/vehicles/{plate}/location";
+	private final String ORDERS_URL = "/vehicles/{plate}/orders";
 	
 	@BeforeEach
     public void setup() {
         mvc = MockMvcBuilders.standaloneSetup(vehicleEndpoint)
-                .setControllerAdvice(new VehicleNotFoundAdvice())
+                .setControllerAdvice(new VehicleNotFoundAdvice(), new OrderIDAlreadyExistsAdvice())
                 .build();
     }
 	
@@ -132,6 +136,75 @@ public class VehicleEndpointTests {
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
 	}
 	
+	/**
+	 * Test that checks the response of request to insert a new order for a vehicle.
+	 * The response must have a 201 code which means the location has been updated.
+	 */
+	@Test
+	public void addOrderToVehicle_0K01() throws JsonProcessingException, Exception {
+		final String VEHICLE_PLATE_NUMBER = "111111B";
+		final String ORDER_ID = "123456A";
+		final OrderDTO orderDto = new OrderDTO(ORDER_ID);
+		final String url = ORDERS_URL.replace("{plate}", VEHICLE_PLATE_NUMBER);
+		final OrderDTO orderDtoResponse;
+		ObjectMapper mapper = new ObjectMapper();
+		MockHttpServletResponse response = mvc.perform(
+				post(url)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(mapper.writeValueAsString(orderDto)))
+				.andReturn().getResponse();
+		orderDtoResponse = mapper.readValue(response.getContentAsString(), OrderDTO.class);
+		
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+		assertThat(orderDtoResponse.getOrderId()).isEqualTo(ORDER_ID);
+	}
 	
+	/**
+	 * Test that checks the response of request to insert a new order for a vehicle.
+	 * The response must have a 404 code which means the vehicle isn't in our database so the order
+	 * cannot be placed
+	 */
+	@Test
+	public void addOrderToVehicle_KO01() throws Exception {
+		final String VEHICLE_PLATE_NUMBER = "222222B";
+		final String ORDER_ID = "123456A";
+		final OrderDTO orderDto = new OrderDTO(ORDER_ID);
+		final String url = ORDERS_URL.replace("{plate}", VEHICLE_PLATE_NUMBER);
+		ObjectMapper mapper = new ObjectMapper();
+		MockHttpServletResponse response = mvc.perform(
+				post(url)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(mapper.writeValueAsString(orderDto)))
+				.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+	}
+	
+	/**
+	 * Test that checks the response of request to insert a new order for a vehicle.
+	 * The response must have a 409 code which means there is already an order with that id.
+	 */
+	@Test
+	public void addOrderToVehicle_KO02() throws Exception {
+
+		final String VEHICLE_PLATE_NUMBER = "111111B";
+		final String ORDER_ID = "123456A";
+		final OrderDTO orderDto = new OrderDTO(ORDER_ID);
+		final String url = ORDERS_URL.replace("{plate}", VEHICLE_PLATE_NUMBER);
+		ObjectMapper mapper = new ObjectMapper();
+		mvc.perform(
+				post(url)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(mapper.writeValueAsString(orderDto)))
+				.andReturn().getResponse();
+		MockHttpServletResponse repeatedResponse = mvc.perform(
+				post(url)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(mapper.writeValueAsString(orderDto)))
+				.andReturn().getResponse();
+		
+		assertThat(repeatedResponse.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
+	}
 
 }

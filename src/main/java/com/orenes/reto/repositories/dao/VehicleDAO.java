@@ -28,6 +28,7 @@ public class VehicleDAO {
     @JoinColumn(name = "last_location_id", referencedColumnName = "id")
 	private LocationDAO lastLocation;
 	
+	
 	public Long getId() {
 		return this.id;
 	}
@@ -46,6 +47,11 @@ public class VehicleDAO {
 
 	public void setLastLocation(final LocationDAO lastLocation) {
 		this.lastLocation = lastLocation;
+	}
+
+	@Override
+	public String toString() {
+		return "VehicleDAO [id=" + id + ", plateNumber=" + plateNumber + ", lastLocation=" + lastLocation + "]";
 	}
 	
 	

@@ -35,6 +35,8 @@ public class Vehicle {
 
 	@Override
 	public String toString() {
-		return "Vehicle [id=" + this.id + ", plateNumber=" + this.plateNumber + ", lastLocation=" + this.lastLocation + "]";
+		return "Vehicle [id=" + id + ", plateNumber=" + plateNumber + ", lastLocation=" + lastLocation + "]";
 	}
+
+	
 }
