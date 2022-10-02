@@ -73,7 +73,6 @@ public class LocationServiceImpl implements LocationService {
 		final VehicleDAO vehicleDao = this.vehicleRepository.findByPlateNumber(vehiclePlateNumber)
 				.orElseThrow(() -> new VehicleNotFoundException(vehiclePlateNumber));
 		final LocationDAO locationDao = Objects.isNull(vehicleDao.getLastLocation()) ? new LocationDAO() : this.modelMapper.map(vehicleDao.getLastLocation(), LocationDAO.class);
-		locationDao.setVehicle(null); // TODO set a null temporalmente, me está dando problemas con el model mapper
 		return this.modelMapper.map(locationDao, Location.class);
 	}
 
