@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.orenes.reto.endpoints.advices.OrderIDAlreadyExistsAdvice;
+import com.orenes.reto.endpoints.advices.OrderNotFoundAdvice;
 import com.orenes.reto.endpoints.advices.VehicleNotFoundAdvice;
 import com.orenes.reto.endpoints.dto.LocationDTO;
 import com.orenes.reto.endpoints.dto.OrderDTO;
@@ -43,11 +45,13 @@ public class VehicleEndpointTests {
 	private final Long LONGITUDE = 1234567L;
 	private final String LOCATIONS_URL = "/vehicles/{plate}/location";
 	private final String ORDERS_URL = "/vehicles/{plate}/orders";
+	private final String ORDERS_DELETE_URL = "/orders/{orderId}";
 	
 	@BeforeEach
     public void setup() {
         mvc = MockMvcBuilders.standaloneSetup(vehicleEndpoint)
-                .setControllerAdvice(new VehicleNotFoundAdvice(), new OrderIDAlreadyExistsAdvice())
+                .setControllerAdvice(new VehicleNotFoundAdvice(), new OrderIDAlreadyExistsAdvice(),
+                		new OrderNotFoundAdvice())
                 .build();
     }
 	
@@ -205,6 +209,45 @@ public class VehicleEndpointTests {
 				.andReturn().getResponse();
 		
 		assertThat(repeatedResponse.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
+	}
+	
+	/**
+	 * Test that checks the response of request to delete an order.
+	 * The response must have a 204 code which means the order has been deleted.
+	 */
+	@Test
+	public void deleteOrder_0K01() throws JsonProcessingException, Exception {
+		final String ORDER_ID = "123456A";
+		final String VEHICLE_PLATE_NUMBER = "111111B";
+		final String urlDelete = ORDERS_DELETE_URL.replace("{orderId}", ORDER_ID);
+		final String url = ORDERS_URL.replace("{plate}", VEHICLE_PLATE_NUMBER);
+		final OrderDTO orderDto = new OrderDTO(ORDER_ID);
+		ObjectMapper mapper = new ObjectMapper();
+		mvc.perform(
+				post(url)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(mapper.writeValueAsString(orderDto)))
+				.andReturn().getResponse();
+		MockHttpServletResponse response = mvc.perform(
+				delete(urlDelete))
+			.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NO_CONTENT.value());
+	}
+	
+	/**
+	 * Test that checks the response of request to delete an order.
+	 * The response must have a 404 code which means the order isn't in our database.
+	 */
+	@Test
+	public void deleteOrder_KO01() throws Exception {
+		final String ORDER_ID = "123456A";
+		final String url = ORDERS_DELETE_URL.replace("{orderId}", ORDER_ID);
+		MockHttpServletResponse response = mvc.perform(
+				delete(url))
+			.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
 	}
 
 }
