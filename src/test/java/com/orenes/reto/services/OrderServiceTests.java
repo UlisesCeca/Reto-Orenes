@@ -21,7 +21,7 @@ import com.orenes.reto.exceptions.OrderNotFoundException;
 import com.orenes.reto.exceptions.VehicleNotFoundException;
 import com.orenes.reto.repositories.OrderRepository;
 import com.orenes.reto.repositories.dao.OrderDAO;
-import com.orenes.reto.services.entities.Order;
+import com.orenes.reto.services.classes.Order;
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public class OrderServiceTests {

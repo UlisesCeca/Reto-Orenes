@@ -17,8 +17,8 @@ import com.orenes.reto.endpoints.dto.LocationDTO;
 import com.orenes.reto.endpoints.dto.OrderDTO;
 import com.orenes.reto.services.LocationService;
 import com.orenes.reto.services.OrderService;
-import com.orenes.reto.services.entities.Location;
-import com.orenes.reto.services.entities.Order;
+import com.orenes.reto.services.classes.Location;
+import com.orenes.reto.services.classes.Order;
 
 
 /**
