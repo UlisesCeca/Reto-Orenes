@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.orenes.reto.exceptions.VehicleNotFoundException;
 import com.orenes.reto.repositories.LocationRepository;
 import com.orenes.reto.repositories.VehicleRepository;
 import com.orenes.reto.repositories.dao.LocationDAO;
@@ -48,7 +49,7 @@ public class LocationServiceImpl implements LocationService {
 	@Override
 	public Location updateVehicleLocation(final Location newLocation, final String vehiclePlateNumber) {
 		final VehicleDAO vehicleDao = this.vehicleRepository.findByPlateNumber(vehiclePlateNumber)
-				.orElse(null);
+				.orElseThrow(() -> new VehicleNotFoundException(vehiclePlateNumber));
 		final LocationDAO newLocationDao = this.modelMapper.map(newLocation, LocationDAO.class);
 
 		newLocationDao.setDateTime(LocalDateTime.now());
