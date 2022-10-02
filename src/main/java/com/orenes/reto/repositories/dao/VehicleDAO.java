@@ -53,6 +53,20 @@ public class VehicleDAO {
 	public void setLastLocation(final LocationDAO lastLocation) {
 		this.lastLocation = lastLocation;
 	}
+
+	public List<OrderDAO> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<OrderDAO> orders) {
+		this.orders = orders;
+	}
+
+	@Override
+	public String toString() {
+		return "VehicleDAO [id=" + id + ", plateNumber=" + plateNumber + ", lastLocation=" + lastLocation + ", orders="
+				+ orders + "]";
+	}
 	
 	
 	
