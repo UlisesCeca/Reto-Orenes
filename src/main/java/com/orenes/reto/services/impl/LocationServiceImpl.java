@@ -62,4 +62,17 @@ public class LocationServiceImpl implements LocationService {
 		return this.modelMapper.map(newLocationDao, Location.class);
 	}
 
+	/**
+	 * Retrieves the current location from a vehicle with the specified plate number
+	 * @param vehiclePlateNumber the vehicle plate number
+	 * @returnt he current location from the specified vehicle
+	 */
+	@Override
+	public Location getVehicleLocation(final String vehiclePlateNumber) {
+		final VehicleDAO vehicleDao = this.vehicleRepository.findByPlateNumber(vehiclePlateNumber)
+				.orElseThrow(() -> new VehicleNotFoundException(vehiclePlateNumber));
+
+		return this.modelMapper.map(vehicleDao.getLastLocation(), Location.class);
+	}
+
 }
