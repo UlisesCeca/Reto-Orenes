@@ -4,7 +4,7 @@ package com.orenes.reto.services;
 
 import org.springframework.stereotype.Service;
 
-import com.orenes.reto.services.entities.Location;
+import com.orenes.reto.services.classes.Location;
 
 /**
  * Interface that defines the bussiness logic regarding the location of the vehicles

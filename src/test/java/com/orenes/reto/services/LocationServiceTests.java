@@ -13,7 +13,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import com.orenes.reto.exceptions.VehicleNotFoundException;
 import com.orenes.reto.repositories.VehicleRepository;
 import com.orenes.reto.repositories.dao.VehicleDAO;
-import com.orenes.reto.services.entities.Location;
+import com.orenes.reto.services.classes.Location;
 
 /**
  * Test class for the LocationService class

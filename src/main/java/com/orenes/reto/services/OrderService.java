@@ -3,7 +3,7 @@ package com.orenes.reto.services;
 import org.springframework.stereotype.Service;
 
 import com.orenes.reto.exceptions.OrderIDAlreadyExistsException;
-import com.orenes.reto.services.entities.Order;
+import com.orenes.reto.services.classes.Order;
 
 /**
  * Interface that defines the bussiness logic regarding the orders of the clients.

@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.orenes.reto.exceptions.VehicleNotFoundException;
+import com.orenes.reto.repositories.LocationHistoryRepository;
 import com.orenes.reto.repositories.LocationRepository;
 import com.orenes.reto.repositories.VehicleRepository;
 import com.orenes.reto.repositories.dao.LocationDAO;
+import com.orenes.reto.repositories.dao.LocationHistoryDAO;
 import com.orenes.reto.repositories.dao.VehicleDAO;
 import com.orenes.reto.services.LocationService;
-import com.orenes.reto.services.entities.Location;
+import com.orenes.reto.services.classes.Location;
 
 /**
  * Class that implements the bussiness logic regarding the location of the vehicles
@@ -26,17 +28,17 @@ import com.orenes.reto.services.entities.Location;
 public class LocationServiceImpl implements LocationService {
 	
 	private final LocationRepository locationRepository;
-	
 	private final VehicleRepository vehicleRepository;
-	
+	private final LocationHistoryRepository locationHistoryRepository;
 	private final ModelMapper modelMapper;
 	
 	@Autowired
 	public LocationServiceImpl(final LocationRepository locationRepository, final VehicleRepository vehicleRepository,
-			final ModelMapper modelMapper) {
+			final ModelMapper modelMapper, final LocationHistoryRepository locationHistoryRepository) {
 		this.locationRepository = locationRepository;
 		this.modelMapper = modelMapper;
 		this.vehicleRepository = vehicleRepository;
+		this.locationHistoryRepository = locationHistoryRepository;
 	}
 	
 	
@@ -54,11 +56,14 @@ public class LocationServiceImpl implements LocationService {
 		final VehicleDAO vehicleDao = this.vehicleRepository.findByPlateNumber(vehiclePlateNumber)
 				.orElseThrow(() -> new VehicleNotFoundException(vehiclePlateNumber));
 		final LocationDAO newLocationDao = this.modelMapper.map(newLocation, LocationDAO.class);
+		final LocationHistoryDAO locationHistory;
 
 		newLocationDao.setDateTime(LocalDateTime.now());
 		vehicleDao.setLastLocation(newLocationDao);
 		this.locationRepository.save(newLocationDao);
 		this.vehicleRepository.save(vehicleDao);
+		locationHistory = new LocationHistoryDAO(vehicleDao, newLocationDao);
+		this.locationHistoryRepository.save(locationHistory);
 
 		return this.modelMapper.map(newLocationDao, Location.class);
 	}

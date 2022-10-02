@@ -11,7 +11,7 @@ import com.orenes.reto.repositories.VehicleRepository;
 import com.orenes.reto.repositories.dao.OrderDAO;
 import com.orenes.reto.repositories.dao.VehicleDAO;
 import com.orenes.reto.services.OrderService;
-import com.orenes.reto.services.entities.Order;
+import com.orenes.reto.services.classes.Order;
 
 /**
  * Class that implements the bussiness logic regarding the orders of the clients
