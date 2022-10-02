@@ -2,8 +2,10 @@ package com.orenes.reto.endpoints.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,17 +28,20 @@ import com.orenes.reto.services.classes.Order;
  */
 @RestController
 public class VehicleEndpointImpl implements VehicleEndpoint{
+	private static final String LOCATION_TOPIC = "location-topic";
 	
 	private final LocationService locationService;
 	private final OrderService orderService;
 	private final ModelMapper modelMapper;
+	private final KafkaTemplate<String, String> kafkaTemplate;
 	
 	@Autowired
 	public VehicleEndpointImpl(final LocationService locationService, final ModelMapper modelMapper,
-			final OrderService orderService) {
+			final OrderService orderService, @Qualifier("kafkaTemplate") KafkaTemplate<String, String> kafkaTemplate) {
 		this.locationService = locationService;
 		this.modelMapper = modelMapper;
 		this.orderService = orderService;
+		this.kafkaTemplate = kafkaTemplate;
 	}
 
 	/**
@@ -52,8 +57,11 @@ public class VehicleEndpointImpl implements VehicleEndpoint{
 	public ResponseEntity<LocationDTO> updateVehicleLocation(@PathVariable final String plateNumber,
 			@RequestBody final LocationDTO locationDto) {
 		final Location newLocation = this.locationService.updateVehicleLocation(this.modelMapper.map(locationDto, Location.class), plateNumber);
-
-		return ResponseEntity.ok(this.modelMapper.map(newLocation, LocationDTO.class));
+		final LocationDTO savedLocationDto = this.modelMapper.map(newLocation, LocationDTO.class);
+		
+		this.kafkaTemplate.send(LOCATION_TOPIC, savedLocationDto.toString());
+		
+		return ResponseEntity.ok(savedLocationDto);
 	}
 
 	/**
