@@ -1,11 +1,4 @@
 package com.orenes.reto.repositories.dao;
-/**
- * Class that represents the Vehicle entity. This entity stores all the information
- * needed to locate a vehicle. 
- * 
- * @author Ulises Ceca
- * @version 1.0
- */
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +9,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/**
+ * Class that represents the Vehicle entity. This entity stores all the information
+ * needed to locate a vehicle. 
+ * 
+ * @author Ulises Ceca
+ * @version 1.0
+ */
 @Entity
 @Table(name="vehicles")
 public class VehicleDAO {
