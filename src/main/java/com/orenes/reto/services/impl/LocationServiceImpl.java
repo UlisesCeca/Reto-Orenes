@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.orenes.reto.exceptions.VehicleNotFoundException;
 import com.orenes.reto.repositories.LocationRepository;
@@ -47,6 +48,7 @@ public class LocationServiceImpl implements LocationService {
 	 * @return the location with the updated date-time of the system
 	 */
 	@Override
+	@Transactional
 	public Location updateVehicleLocation(final Location newLocation, final String vehiclePlateNumber) {
 		final VehicleDAO vehicleDao = this.vehicleRepository.findByPlateNumber(vehiclePlateNumber)
 				.orElseThrow(() -> new VehicleNotFoundException(vehiclePlateNumber));
