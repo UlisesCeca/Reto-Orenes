@@ -15,11 +15,16 @@ public class LocationDTO {
     
     @NotEmpty
 	private Long latitude;
-    
     @NotEmpty
 	private Long longitude;
-    
 	private LocalDateTime dateTime;
+	
+	LocationDTO () { }
+
+	public LocationDTO(final Long latitude, final Long longitude) {
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
 	
 	public Long getLatitude() {
 		return this.latitude;
