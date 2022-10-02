@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,5 +81,18 @@ public class VehicleEndpointImpl implements VehicleEndpoint{
 		
 
 		return new ResponseEntity<OrderDTO>(this.modelMapper.map(createdOrder, OrderDTO.class), HttpStatus.CREATED);
+	}
+
+	/**
+	 * Deletes an existing order.
+	 * @param orderId the id of the order to be deleted
+	 */
+	@DeleteMapping("/orders/{orderId}")
+	@Override
+	public ResponseEntity<Void> deleteOrder(@PathVariable final String orderId) {
+		this.orderService.deleteOrder(orderId);
+		
+
+		return ResponseEntity.noContent().build();
 	}
 }
