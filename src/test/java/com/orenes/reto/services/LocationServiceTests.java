@@ -3,6 +3,7 @@ package com.orenes.reto.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +37,16 @@ public class LocationServiceTests {
 	 */
 	@Test
 	public void updateVehicleLocation_0K01() {
-		final Long VEHICLE_ID = 1L;
-		final Location location = new Location(1234L, 4321L);
-		VehicleDAO vehicleDAO = this.vehicleRepository.findById(VEHICLE_ID).get();
+		final String VEHICLE_PLATE_NUMBER = "111111B";
+		final Location initialLocation = new Location(1234L, 4321L);
+		final Location currentLocation;
+		VehicleDAO vehicleDAO = this.vehicleRepository.findByPlateNumber(VEHICLE_PLATE_NUMBER).get();
 		
 		assertThat(vehicleDAO.getLastLocation()).isNull();
-		this.locationService.updateVehicleLocation(location, vehicleDAO.getPlateNumber());
-		vehicleDAO = this.vehicleRepository.findById(VEHICLE_ID).get();
-		assertThat(vehicleDAO.getLastLocation()).isNotNull();
+		this.locationService.updateVehicleLocation(initialLocation, vehicleDAO.getPlateNumber());
+		currentLocation = this.locationService.getVehicleLocation(VEHICLE_PLATE_NUMBER);
+		assertEquals(initialLocation.getLatitude(), currentLocation.getLatitude());
+		assertEquals(initialLocation.getLongitude(), currentLocation.getLongitude());
 	}
 	
 	/**
@@ -66,16 +69,10 @@ public class LocationServiceTests {
 	@Test
 	public void getVehicleLocation_0K01() {
 		final String VEHICLE_PLATE_NUMBER = "111111A";
-		final Location initialLocation = new Location(1234L, 4321L);
-		final Location updatedLocation; 
-		VehicleDAO vehicleDAO = this.vehicleRepository.findByPlateNumber(VEHICLE_PLATE_NUMBER).get();
-		
-		assertThat(vehicleDAO.getLastLocation()).isNull();
-		this.locationService.updateVehicleLocation(initialLocation, vehicleDAO.getPlateNumber());
-		updatedLocation = this.locationService.getVehicleLocation(VEHICLE_PLATE_NUMBER);
-		assertThat(updatedLocation).isNotNull();
-		assertEquals(initialLocation.getLatitude(), updatedLocation.getLatitude());
-		assertEquals(initialLocation.getLongitude(), updatedLocation.getLongitude());
+		final Location initialLocation = this.locationService.getVehicleLocation(VEHICLE_PLATE_NUMBER);
+		assertThat(initialLocation.getLatitude()).isNotNull();
+		assertThat(initialLocation.getLongitude()).isNotNull();
+		assertThat(initialLocation.getDateTime()).isNotNull();
 	}
 	
 	/**
@@ -83,11 +80,12 @@ public class LocationServiceTests {
 	 */
 	@Test
 	public void getVehicleLocation_0K02() {
-		final String VEHICLE_PLATE_NUMBER = "111111A";
+		final String VEHICLE_PLATE_NUMBER = "111111B";
 		final Location updatedLocation; 
 		updatedLocation = this.locationService.getVehicleLocation(VEHICLE_PLATE_NUMBER);
 		assertThat(updatedLocation.getLatitude()).isNull();
 		assertThat(updatedLocation.getLongitude()).isNull();
+		assertThat(updatedLocation.getDateTime()).isNull();
 	}
 	
 	/**
