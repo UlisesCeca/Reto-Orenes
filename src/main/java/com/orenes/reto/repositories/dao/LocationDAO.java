@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -24,8 +23,7 @@ public class LocationDAO {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	@OneToOne
-    @JoinColumn(name = "vehicle", referencedColumnName = "id", updatable = false)
+	@OneToOne(mappedBy = "lastLocation")
     private VehicleDAO vehicle;
 	@Column(name = "latitude")
 	private Long latitude;
@@ -37,11 +35,11 @@ public class LocationDAO {
 	public Long getId() {
 		return id;
 	}
-	
+
 	public VehicleDAO getVehicle() {
 		return this.vehicle;
 	}
-
+	
 	public void setVehicle(final VehicleDAO vehicle) {
 		this.vehicle = vehicle;
 	}
@@ -49,7 +47,7 @@ public class LocationDAO {
 	public Long getLatitude() {
 		return this.latitude;
 	}
-
+	
 	public void setLatitude(final Long latitude) {
 		this.latitude = latitude;
 	}
@@ -57,7 +55,7 @@ public class LocationDAO {
 	public Long getLongitude() {
 		return this.longitude;
 	}
-
+	
 	public void setLongitude(final Long longitude) {
 		this.longitude = longitude;
 	}
@@ -65,7 +63,7 @@ public class LocationDAO {
 	public LocalDateTime getDateTime() {
 		return this.dateTime;
 	}
-
+	
 	public void setDateTime(final LocalDateTime dateTime) {
 		this.dateTime = dateTime;
 	}
@@ -75,4 +73,5 @@ public class LocationDAO {
 		return "LocationDAO [id=" + this.id + ", vehicle=" + this.vehicle + ", latitude=" + this.latitude + ", longitude=" + this.longitude
 				+ ", dateTime=" + this.dateTime + "]";
 	}
+	
 }

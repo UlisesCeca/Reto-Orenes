@@ -24,22 +24,22 @@ public class VehicleDAO {
 	private Long id;
 	@Column(name = "plate_number", updatable = false, unique = true)
 	private String plateNumber;
-	@OneToOne(mappedBy = "vehicle")
-    @JoinColumn(name = "last_location", referencedColumnName = "id")
+	@OneToOne
+    @JoinColumn(name = "last_location_id", referencedColumnName = "id")
 	private LocationDAO lastLocation;
 	
 	public Long getId() {
 		return this.id;
 	}
-	
+
 	public String getPlateNumber() {
 		return this.plateNumber;
 	}
-	
+
 	public void setPlateNumber(final String plateNumber) {
 		this.plateNumber = plateNumber;
 	}
-	
+
 	public LocationDAO getLastLocation() {
 		return this.lastLocation;
 	}
@@ -47,10 +47,7 @@ public class VehicleDAO {
 	public void setLastLocation(final LocationDAO lastLocation) {
 		this.lastLocation = lastLocation;
 	}
-
-	@Override
-	public String toString() {
-		return "VehicleDAO [id=" + this.id + ", plateNumber=" + this.plateNumber + ", lastLocation=" + this.lastLocation + "]";
-	}
+	
+	
 	
 }

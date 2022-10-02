@@ -21,7 +21,7 @@ public class OrderDAO {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	@OneToOne
-    @JoinColumn(name = "assigned_vehicle", referencedColumnName = "id")
+    @JoinColumn(name = "assigned_vehicle_id", referencedColumnName = "id")
     private VehicleDAO assignedVehicle;
 	
 	public Long getId() {
