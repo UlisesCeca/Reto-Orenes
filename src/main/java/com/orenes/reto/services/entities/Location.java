@@ -18,6 +18,13 @@ public class Location {
 	private Long longitude;
 	private LocalDateTime dateTime;
 	
+	Location () { }
+
+	public Location(final Long latitude, final Long longitude) {
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+	
 	public Long getId() {
 		return id;
 	}
