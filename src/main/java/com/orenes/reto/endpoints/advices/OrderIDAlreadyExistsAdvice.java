@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.orenes.reto.exceptions.OrderIDAlreadyExistsException;
 
 /**
- * Advice for when a vehicle resource isn't found on the database.
+ * Advice for when an order already exists on the database.
  * @author Ulises Ceca
  * @version 1.0
  */

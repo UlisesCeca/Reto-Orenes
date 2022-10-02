@@ -22,10 +22,10 @@ public class OrderDAO {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_vehicle_id", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "assigned_vehicle_id", referencedColumnName = "id", nullable = false)
     private VehicleDAO assignedVehicle;
-	@Column(name = "order_id", updatable = false, unique = true)
+	@Column(name = "order_id", updatable = false, unique = true, nullable = false)
 	private String orderId;
 	
 	public Long getId() {

@@ -16,9 +16,10 @@ public interface OrderService {
 	/**
 	 * Inserts a new order into the database.
 	 *
+	 * @param plateNumber the plate number of the care where the order will travel
 	 * @param newOrder the new location order to be inserted
 	 * @throws OrderIDAlreadyExistsException if the order ID already exists
 	 * @return the inserted order
 	 */
-	Order insertOrder(final Order newOrder) throws OrderIDAlreadyExistsException;
+	Order insertOrder(final String plateNumber, final Order newOrder) throws OrderIDAlreadyExistsException;
 }

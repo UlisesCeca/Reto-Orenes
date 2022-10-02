@@ -34,24 +34,23 @@ public class OrderServiceImpl implements OrderService{
 	/**
 	 * Inserts a new order into the database.
 	 *
+	 * @param plateNumber the plate number of the care where the order will travel
 	 * @param newOrder the new location order to be inserted
 	 * @throws OrderIDAlreadyExistsException if the order ID already exists
 	 * @return the inserted order
 	 */
 	@Override
-	public Order insertOrder(final Order newOrder) throws OrderIDAlreadyExistsException{
-		final String vehiclePlateNumber = newOrder.getAssignedVehicle().getPlateNumber();
-		final VehicleDAO assignedVehicle = this.vehicleRepository.findByPlateNumber(vehiclePlateNumber)
-				.orElseThrow(() -> new VehicleNotFoundException(vehiclePlateNumber));
+	public Order insertOrder(final String plateNumber, final Order newOrder) throws OrderIDAlreadyExistsException{
+		final VehicleDAO assignedVehicle = this.vehicleRepository.findByPlateNumber(plateNumber)
+				.orElseThrow(() -> new VehicleNotFoundException(plateNumber));
 		final OrderDAO newOrderDao;
 		
 		if (this.orderRepository.existsByOrderId(newOrder.getOrderId())) {
 			throw new OrderIDAlreadyExistsException(newOrder.getOrderId());
 		} else {
 			newOrderDao = this.modelMapper.map(newOrder, OrderDAO.class);
-			assignedVehicle.getOrders().add(newOrderDao);
-			this.vehicleRepository.save(assignedVehicle);
-//			this.orderRepository.save(newOrderDao);
+			newOrderDao.setAssignedVehicle(assignedVehicle);
+			this.orderRepository.save(newOrderDao);
 		}
 		
 		return this.modelMapper.map(newOrderDao, Order.class);
