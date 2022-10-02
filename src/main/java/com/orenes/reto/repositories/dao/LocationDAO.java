@@ -1,11 +1,4 @@
 package com.orenes.reto.repositories.dao;
-/**
- * Class that represents the Location entity. This entity represents all the information needed to know 
- * where a vehicle is located at a given moment. 
- * 
- * @author Ulises Ceca
- * @version 1.0
- */
 
 import java.time.LocalDateTime;
 
@@ -17,6 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/**
+ * Class that represents the Location entity. This entity represents all the information needed to know 
+ * where a vehicle is located at a given moment. 
+ * 
+ * @author Ulises Ceca
+ * @version 1.0
+ */
 @Entity
 @Table(name="locations")
 public class LocationDAO {
