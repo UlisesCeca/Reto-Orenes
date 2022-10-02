@@ -1,6 +1,7 @@
 package com.orenes.reto.services.impl;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,20 @@ public class LocationServiceImpl implements LocationService {
 		this.vehicleRepository.save(vehicleDao);
 
 		return this.modelMapper.map(newLocationDao, Location.class);
+	}
+
+	/**
+	 * Retrieves the current location from a vehicle with the specified plate number.
+	 * @param vehiclePlateNumber the vehicle plate number
+	 * @return the current location from the specified vehicle
+	 */
+	@Override
+	public Location getVehicleLocation(final String vehiclePlateNumber) {
+		final VehicleDAO vehicleDao = this.vehicleRepository.findByPlateNumber(vehiclePlateNumber)
+				.orElseThrow(() -> new VehicleNotFoundException(vehiclePlateNumber));
+		final LocationDAO locationDao = Objects.isNull(vehicleDao.getLastLocation()) ? new LocationDAO() : this.modelMapper.map(vehicleDao.getLastLocation(), LocationDAO.class);
+
+		return this.modelMapper.map(locationDao, Location.class);
 	}
 
 }

@@ -16,5 +16,12 @@ public interface VehicleEndpoint {
 	 * @return the updated location of the vehicle with the current system's date-time
 	 */
 	ResponseEntity<LocationDTO> updateVehicleLocation(final String plateNumber, final LocationDTO locationDto);
+	
+	/**
+	 * Retrieves the current location from a vehicle with the specified plate number.
+	 * @param vehiclePlateNumber the vehicle plate number
+	 * @return the current location from the specified vehicle
+	 */
+	ResponseEntity<LocationDTO> getVehicleLocation(final String plateNumber);
 
 }

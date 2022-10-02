@@ -36,14 +36,16 @@ public class LocationServiceTests {
 	 */
 	@Test
 	public void updateVehicleLocation_0K01() {
-		final Long VEHICLE_ID = 1L;
-		final Location location = new Location(1234L, 4321L);
-		VehicleDAO vehicleDAO = this.vehicleRepository.findById(VEHICLE_ID).get();
+		final String VEHICLE_PLATE_NUMBER = "111111B";
+		final Location initialLocation = new Location(1234L, 4321L);
+		final Location currentLocation;
+		VehicleDAO vehicleDAO = this.vehicleRepository.findByPlateNumber(VEHICLE_PLATE_NUMBER).get();
 		
 		assertThat(vehicleDAO.getLastLocation()).isNull();
-		this.locationService.updateVehicleLocation(location, vehicleDAO.getPlateNumber());
-		vehicleDAO = this.vehicleRepository.findById(VEHICLE_ID).get();
-		assertThat(vehicleDAO.getLastLocation()).isNotNull();
+		this.locationService.updateVehicleLocation(initialLocation, vehicleDAO.getPlateNumber());
+		currentLocation = this.locationService.getVehicleLocation(VEHICLE_PLATE_NUMBER);
+		assertEquals(initialLocation.getLatitude(), currentLocation.getLatitude());
+		assertEquals(initialLocation.getLongitude(), currentLocation.getLongitude());
 	}
 	
 	/**
@@ -56,6 +58,44 @@ public class LocationServiceTests {
 		final Location location = new Location(1234L, 4321L);
 		final Exception exception = assertThrows(VehicleNotFoundException.class, () -> {
 			this.locationService.updateVehicleLocation(location, VEHICLE_PLATE_NUMBER);
+	    });
+		assertEquals(exception.getMessage(), EXPECTED_NOT_FOUND_MESSAGE + VEHICLE_PLATE_NUMBER);
+	}
+	
+	/**
+	 * Test that checks if the retrieval of a vehicle's location is correct and it exists.
+	 */
+	@Test
+	public void getVehicleLocation_0K01() {
+		final String VEHICLE_PLATE_NUMBER = "111111A";
+		final Location initialLocation = this.locationService.getVehicleLocation(VEHICLE_PLATE_NUMBER);
+		assertThat(initialLocation.getLatitude()).isNotNull();
+		assertThat(initialLocation.getLongitude()).isNotNull();
+		assertThat(initialLocation.getDateTime()).isNotNull();
+	}
+	
+	/**
+	 * Test that checks if the retrieval of a vehicle's location is correct but it doesn't exist.
+	 */
+	@Test
+	public void getVehicleLocation_0K02() {
+		final String VEHICLE_PLATE_NUMBER = "111111B";
+		final Location updatedLocation; 
+		updatedLocation = this.locationService.getVehicleLocation(VEHICLE_PLATE_NUMBER);
+		assertThat(updatedLocation.getLatitude()).isNull();
+		assertThat(updatedLocation.getLongitude()).isNull();
+		assertThat(updatedLocation.getDateTime()).isNull();
+	}
+	
+	/**
+	 * Test that checks if an exception is thrown when the specified plate number of a car
+	 * doesn't exist.
+	 */
+	@Test
+	public void getVehicleLocation_KO01() {
+		final String VEHICLE_PLATE_NUMBER = "33333B";
+		final Exception exception = assertThrows(VehicleNotFoundException.class, () -> {
+			this.locationService.getVehicleLocation(VEHICLE_PLATE_NUMBER);
 	    });
 		assertEquals(exception.getMessage(), EXPECTED_NOT_FOUND_MESSAGE + VEHICLE_PLATE_NUMBER);
 	}
