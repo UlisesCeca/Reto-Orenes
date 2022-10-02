@@ -52,8 +52,9 @@ public class VehicleEndpointImpl implements VehicleEndpoint{
 	public ResponseEntity<LocationDTO> updateVehicleLocation(@PathVariable final String plateNumber,
 			@RequestBody final LocationDTO locationDto) {
 		final Location newLocation = this.locationService.updateVehicleLocation(this.modelMapper.map(locationDto, Location.class), plateNumber);
-
-		return ResponseEntity.ok(this.modelMapper.map(newLocation, LocationDTO.class));
+		final LocationDTO savedLocationDto = this.modelMapper.map(newLocation, LocationDTO.class);
+		
+		return ResponseEntity.ok(savedLocationDto);
 	}
 
 	/**
