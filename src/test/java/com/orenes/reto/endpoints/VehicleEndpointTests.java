@@ -2,6 +2,7 @@ package com.orenes.reto.endpoints;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,8 +36,8 @@ public class VehicleEndpointTests {
 	@Autowired
 	private VehicleEndpoint vehicleEndpoint;
 
-	private final Long LATITUDE = 1234L;
-	private final Long LONGITUDE = 4321L;
+	private final Long LATITUDE = 1234566L;
+	private final Long LONGITUDE = 1234567L;
 	private final String LOCATIONS_URL = "/vehicles/{plate}/location";
 	
 	@BeforeEach
@@ -86,6 +87,47 @@ public class VehicleEndpointTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(new ObjectMapper().writeValueAsString(locationDto)))
 				.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+	}
+
+	
+	/**
+	 * Test that checks the response of request to obtain the location of a vehicle.
+	 * The response must have a 200 code which means the location has been retrieved.
+	 */
+	@Test
+	public void getVehicleLocation_0K01() throws JsonProcessingException, Exception {
+		final String VEHICLE_PLATE_NUMBER = "111111A";
+		final String url = LOCATIONS_URL.replace("{plate}", VEHICLE_PLATE_NUMBER);
+		final LocationDTO locationDtoResponse;
+		ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+		MockHttpServletResponse response = mvc.perform(
+				get(url)
+				.accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+		locationDtoResponse = mapper.readValue(response.getContentAsString(), LocationDTO.class);
+		
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+		assertThat(locationDtoResponse.getDateTime()).isNotNull();
+		assertThat(locationDtoResponse.getLatitude()).isEqualTo(LATITUDE);
+		assertThat(locationDtoResponse.getLongitude()).isEqualTo(LONGITUDE);
+	}
+	
+	/**
+	 * Test that checks the response of request to retrieve the location of a vehicle.
+	 * The response must have a 404 code which means the vehicle isn't in our database so the location
+	 * cannot be retrieved.
+	 */
+	@Test
+	public void getVehicleLocation_KO01() throws Exception {
+		final String VEHICLE_PLATE_NUMBER = "222222A";
+		final String url = LOCATIONS_URL.replace("{plate}", VEHICLE_PLATE_NUMBER);
+		MockHttpServletResponse response = mvc.perform(
+				get(url)
+				.accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();;
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
 	}
