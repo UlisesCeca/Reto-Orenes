@@ -32,4 +32,10 @@ public interface VehicleEndpoint {
 	 */
 	ResponseEntity<OrderDTO> addOrderToVehicle(final String plateNumber, final OrderDTO newOrder);
 
+	/**
+	 * Deletes an existing order.
+	 * @param orderId the id of the order to be deleted
+	 */
+	ResponseEntity<Void> deleteOrder(final String orderId);
+
 }
