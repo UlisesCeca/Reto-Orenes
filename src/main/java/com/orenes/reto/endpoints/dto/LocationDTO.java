@@ -4,23 +4,22 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotEmpty;
 
-import com.orenes.reto.services.entities.Vehicle;
-
+/**
+ * DTO for the Location entity. This class represents all the information needed to know 
+ * where a vehicle is located at a given moment. 
+ * 
+ * @author Ulises Ceca
+ * @version 1.0
+ */
 public class LocationDTO {
-//    private Vehicle vehicle;
+    
     @NotEmpty
 	private Long latitude;
+    
     @NotEmpty
 	private Long longitude;
+    
 	private LocalDateTime dateTime;
-	
-//	public Vehicle getVehicle() {
-//		return this.vehicle;
-//	}
-//
-//	public void setVehicle(final Vehicle vehicle) {
-//		this.vehicle = vehicle;
-//	}
 	
 	public Long getLatitude() {
 		return this.latitude;
@@ -29,7 +28,7 @@ public class LocationDTO {
 	public void setLatitude(final Long latitude) {
 		this.latitude = latitude;
 	}
-	
+
 	public Long getLongitude() {
 		return this.longitude;
 	}
@@ -37,7 +36,7 @@ public class LocationDTO {
 	public void setLongitude(final Long longitude) {
 		this.longitude = longitude;
 	}
-	
+
 	public LocalDateTime getDateTime() {
 		return this.dateTime;
 	}
@@ -45,10 +44,10 @@ public class LocationDTO {
 	public void setDateTime(final LocalDateTime dateTime) {
 		this.dateTime = dateTime;
 	}
-	
-//	@Override
-//	public String toString() {
-//		return "LocationDAO [vehicle=" + this.vehicle + ", latitude=" + this.latitude + ", longitude=" + this.longitude
-//				+ ", dateTime=" + this.dateTime + "]";
-//	}
+
+	@Override
+	public String toString() {
+		return "LocationDAO [latitude=" + this.latitude + ", longitude=" + this.longitude
+				+ ", dateTime=" + this.dateTime + "]";
+	}
 }
