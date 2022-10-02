@@ -10,6 +10,12 @@ public class Order {
 	private Long id;
     private Vehicle assignedVehicle;
 	private String orderId;
+
+	Order() {}
+	
+	public Order(String orderId) {
+		this.orderId = orderId;
+	}
 	
 	public Vehicle getAssignedVehicle() {
 		return this.assignedVehicle;
