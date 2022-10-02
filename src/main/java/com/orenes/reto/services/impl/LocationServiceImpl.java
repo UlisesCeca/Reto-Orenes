@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,19 +28,22 @@ import com.orenes.reto.services.classes.Location;
  */
 @Service
 public class LocationServiceImpl implements LocationService {
+	private static final String LOCATION_TOPIC = "location-topic";
 	
 	private final LocationRepository locationRepository;
 	private final VehicleRepository vehicleRepository;
 	private final LocationHistoryRepository locationHistoryRepository;
 	private final ModelMapper modelMapper;
+	private final KafkaTemplate<String, String> kafkaTemplate;
 	
 	@Autowired
 	public LocationServiceImpl(final LocationRepository locationRepository, final VehicleRepository vehicleRepository,
-			final ModelMapper modelMapper, final LocationHistoryRepository locationHistoryRepository) {
+			final ModelMapper modelMapper, final LocationHistoryRepository locationHistoryRepository, @Qualifier("kafkaTemplate") KafkaTemplate<String, String> kafkaTemplate) {
 		this.locationRepository = locationRepository;
 		this.modelMapper = modelMapper;
 		this.vehicleRepository = vehicleRepository;
 		this.locationHistoryRepository = locationHistoryRepository;
+		this.kafkaTemplate = kafkaTemplate;
 	}
 	
 	
@@ -56,6 +61,7 @@ public class LocationServiceImpl implements LocationService {
 		final VehicleDAO vehicleDao = this.vehicleRepository.findByPlateNumber(vehiclePlateNumber)
 				.orElseThrow(() -> new VehicleNotFoundException(vehiclePlateNumber));
 		final LocationDAO newLocationDao = this.modelMapper.map(newLocation, LocationDAO.class);
+		final Location location;
 		final LocationHistoryDAO locationHistory;
 
 		newLocationDao.setDateTime(LocalDateTime.now());
@@ -64,8 +70,10 @@ public class LocationServiceImpl implements LocationService {
 		this.vehicleRepository.save(vehicleDao);
 		locationHistory = new LocationHistoryDAO(vehicleDao, newLocationDao);
 		this.locationHistoryRepository.save(locationHistory);
+		location = this.modelMapper.map(newLocationDao, Location.class);
+		this.kafkaTemplate.send(LOCATION_TOPIC, location.toString());
 
-		return this.modelMapper.map(newLocationDao, Location.class);
+		return location;
 	}
 
 	/**
